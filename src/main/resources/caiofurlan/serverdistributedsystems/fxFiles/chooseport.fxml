@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="create_client_container" stylesheets="@../style/registeruser.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="caiofurlan.serverdistributedsystems.controllers.ChoosePortController">
+    <Text layoutX="96.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Digite a porta do servidor:" />
+    <Button fx:id="button_start" layoutX="175.0" layoutY="284.0" mnemonicParsing="false" text="Iniciar servidor" />
+    <TextField fx:id="port_field" layoutX="290.0" layoutY="151.0" />
+   <Text fx:id="error_text" layoutX="296.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="error_label" />
+</AnchorPane>
