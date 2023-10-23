@@ -4,10 +4,11 @@ import caiofurlan.serverdistributedsystems.App;
 import caiofurlan.serverdistributedsystems.models.Model;
 import caiofurlan.serverdistributedsystems.models.UserModel;
 import caiofurlan.serverdistributedsystems.system.utilities.JWTManager;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -20,13 +21,19 @@ public class ChoosePortController implements Initializable {
 
     private App app = new App();
 
-    public Text error_text;
-    public Button button_start;
-    public TextField port_field;
+    @FXML
+    private Label error_text;
+
+    @FXML
+    private Button button_start;
+
+    @FXML
+    private TextField port_field;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         port_field.setText("12345");
+        error_text.setText("");
         try {
             if (Model.getInstance().getDatabaseDriver().getUserByID(1) == null)
             {
@@ -37,12 +44,11 @@ public class ChoosePortController implements Initializable {
             throw new RuntimeException(e);
         }
         button_start.setOnAction(event -> {
-            Stage stage = (Stage) port_field.getScene().getWindow();
             if (port_field.getText().isEmpty()) {
-                error_text.setText("Porta não pode ser vazia");
+                error_text.setText("O número da porta não pode ser vazio.");
             }
             else {
-                Model.getInstance().getViewFactory().closeStage(stage);
+                Model.getInstance().getViewFactory().closeStage((Stage) port_field.getScene().getWindow());
                 Model.getInstance().getViewFactory().showHomeWindow();
                 app.startServer(port_field.getText());
             }

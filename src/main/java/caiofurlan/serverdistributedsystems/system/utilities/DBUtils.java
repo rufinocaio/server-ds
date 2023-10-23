@@ -1,8 +1,9 @@
 package caiofurlan.serverdistributedsystems.system.utilities;
 
-import java.sql.*;
-import javafx.scene.control.Alert;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
+
+import java.sql.*;
 
 public class DBUtils {
 

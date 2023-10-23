@@ -4,8 +4,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 
-import static java.lang.Long.parseLong;
-
 public class DatabaseDriver {
     private Connection connection;
 
@@ -26,10 +24,6 @@ public class DatabaseDriver {
             if(BCrypt.checkpw(password, resultSet.getString("password"))){
                 return resultSet;
             }
-            //resultSet = statement.executeQuery("SELECT * FROM user WHERE email = '" + email + "' AND password = '" + password + "'");
-            System.out.println(resultSet);
-            System.out.println(resultSet.getString("email"));
-            System.out.println(password);
         } catch (SQLException e) {
             e.printStackTrace();
         }

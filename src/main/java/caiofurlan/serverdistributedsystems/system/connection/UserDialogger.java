@@ -26,7 +26,7 @@ public class UserDialogger implements Runnable {
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
             String message = null;
             while ((message = reader.readLine()) != null) {
-                System.out.println("Received message from client: " + message);
+                System.out.println("JSON recebido do cliente: " + message);
 
                 // Parse JSON message
                 JsonNode jsonNode = objectMapper.readTree(message);
@@ -36,12 +36,12 @@ public class UserDialogger implements Runnable {
                 String response = UserDialogActions.chooseAction(action, message);
 
                 // Send the response back to the client
-                System.out.println("Sending back to client: " + response);
+                System.out.println("Enviando para o cliente: " + response);
                 writer.println(response);
             }
         } catch (IOException e) {
             try {
-                System.out.println("Socket closed!");
+                System.out.println("Socket fechado!");;
                 clientSocket.close();
             } catch (IOException ex) {
                 e.printStackTrace();

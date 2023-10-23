@@ -1,9 +1,10 @@
 package caiofurlan.serverdistributedsystems.views;
 
-import javax.swing.JOptionPane;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import javax.swing.*;
 
 public class ViewFactory {
 
@@ -36,7 +37,7 @@ public class ViewFactory {
 
     public void showHomeWindow() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/caiofurlan/serverdistributedsystems/fxFiles/home.fxml"));
-        createStage(loader, "Esperando conecções...");
+        createStage(loader, "Servidor aberto!");
     }
 
     /* ----------------- */

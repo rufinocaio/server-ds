@@ -82,7 +82,6 @@ public class UserDialogActions {
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().getUserLogin(request.getEmail(), request.getPassword());
         UserModel user = Model.getInstance().getDatabaseDriver().getUserFromResultSet(resultSet);
         if (user != null) {
-            System.out.println("Usuario encontrado");
             boolean isValid = JWTManager.checkPassword(request.getPassword(), user.getPassword());
             if (isValid) {
                 String token = JWTManager.generateToken(String.valueOf(user.getUserID()), user.isAdmin());
