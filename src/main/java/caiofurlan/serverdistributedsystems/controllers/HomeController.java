@@ -10,11 +10,15 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
 
     @FXML
-    private Label home_text;
+    private static Label home_text;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.home_text.setText("Servidor aberto!");
+        home_text = new Label();
+        setHome_text("Servidor aberto!");
     }
 
+    public static void setHome_text(String text) {
+        home_text.setText(text);
+    }
 }

@@ -29,12 +29,8 @@ public class App extends Application {
     }
 
     public void startServer(String port) {
-        try {
-            Server server = new Server(Integer.parseInt(port));
-            server.start();
-        } catch (IOException e) {
-            Model.getInstance().getViewFactory().showErrorMessage(e.getMessage());
-        }
+        Thread serverThread = new Thread(new Server(Integer.parseInt(port)));
+        serverThread.start();
     }
 
 }

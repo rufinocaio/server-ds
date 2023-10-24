@@ -14,7 +14,7 @@ public class ViewFactory {
     private void createStage(FXMLLoader loader, String title) {
         Scene scene = null;
         try {
-            scene = new Scene(loader.load());
+            scene = new Scene(loader.   load());
         } catch (Exception e) {
             e.printStackTrace();
         }

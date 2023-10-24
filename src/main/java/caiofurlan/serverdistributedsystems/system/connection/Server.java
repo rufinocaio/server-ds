@@ -4,14 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server {
+public class Server implements Runnable{
 
     private final int PORT;
 
     public Server(int port) {
         PORT = port;
     }
-    public void start() throws IOException {
+
+    @Override
+    public void run() {
         ServerSocket serverSocket = null;
 
         try {
@@ -27,11 +29,15 @@ public class Server {
                 clientThread.start();
             }
         } catch (IOException e) {
-            throw e;
+            throw new RuntimeException(e);
         } finally {
             if (serverSocket != null && !serverSocket.isClosed()) {
                 System.out.println("Servidor finalizado.");
-                serverSocket.close();
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

@@ -71,7 +71,7 @@ public class UserDialogActions {
         request.setPassword(JWTManager.hashPassword(request.getPassword()));
         UserModel user = new UserModel(request.getName(), request.getEmail(), request.getPassword(), "user");
         Model.getInstance().getDatabaseDriver().addUser(user);
-        response = sender.stringSendRegisterUser();
+        response = sender.stringSendAutoRegister();
         return response;
     }
 

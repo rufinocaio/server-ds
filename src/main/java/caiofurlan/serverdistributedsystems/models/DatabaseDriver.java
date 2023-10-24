@@ -31,7 +31,6 @@ public class DatabaseDriver {
         if (!resultSet.isBeforeFirst()) {
             return null;
         }
-        System.out.println(resultSet);
         return resultSet;
     }
 

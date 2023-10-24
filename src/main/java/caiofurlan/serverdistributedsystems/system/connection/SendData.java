@@ -46,6 +46,10 @@ public class SendData {
         return generateFinalData("cadastro-usuario", false, "Usuário cadastrado com sucesso!", null);
     }
 
+    public Map<String, Object> generateAutoRegisterData() throws JsonProcessingException {
+        return generateFinalData("autocadastro-usuario", false, "Usuário cadastrado com sucesso!", null);
+    }
+
     public Map<String, Object> generateLogoutData() throws JsonProcessingException {
         return generateFinalData("logout", false, "logout efetuado com sucesso", null);
     }
@@ -83,6 +87,10 @@ public class SendData {
 
     public String stringSendRegisterUser() throws JsonProcessingException {
         return objectMapper.writeValueAsString(generateRegisterUserData());
+    }
+
+    public String stringSendAutoRegister() throws JsonProcessingException {
+        return objectMapper.writeValueAsString(generateAutoRegisterData());
     }
 
     public String stringSendError(String action, String message) throws JsonProcessingException {

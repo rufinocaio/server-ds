@@ -2,6 +2,7 @@ package caiofurlan.serverdistributedsystems.system.connection;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.BufferedReader;
 import java.io.IOException;
