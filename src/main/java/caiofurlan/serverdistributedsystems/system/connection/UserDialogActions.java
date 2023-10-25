@@ -31,7 +31,6 @@ public class UserDialogActions {
                     break;
                 case "autocadastro-usuario":
                     response = manageUserAutoRegister(data);
-                // Handle other actions as needed
                     break;
                 default:
                     response = unknownAction(action);
@@ -99,14 +98,6 @@ public class UserDialogActions {
     private static String manageLogout(String data) throws JsonProcessingException {
         ReceiveData request = new ReceiveData("logout", ReceiveData.stringToMap(data));
         SendData sender = new SendData();
-
-        /*SessionDAO dao = new SessionDAO();
-
-        JwtSession jwt = dao.getSessionByToken(request.getData().getToken());
-
-        if (jwt != null) {
-            dao.delete(jwt);
-        }*/
 
         return sender.stringSendLogout();
     }

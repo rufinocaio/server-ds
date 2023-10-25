@@ -24,7 +24,6 @@ public class Server implements Runnable{
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Novo cliente: " + clientSocket);
 
-                // Inicie uma nova thread para tratar a conexão do cliente
                 Thread clientThread = new Thread(new UserDialogger(clientSocket));
                 clientThread.start();
             }

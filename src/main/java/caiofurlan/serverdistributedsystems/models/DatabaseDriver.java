@@ -21,6 +21,9 @@ public class DatabaseDriver {
         try {
             statement = this.connection.createStatement();
             resultSet = statement.executeQuery("SELECT * FROM user WHERE email = '" + email + "'");
+            if (!resultSet.isBeforeFirst()) {
+                return null;
+            }
             if(BCrypt.checkpw(password, resultSet.getString("password"))){
                 return resultSet;
             }
@@ -28,9 +31,6 @@ public class DatabaseDriver {
             e.printStackTrace();
         }
         if (resultSet == null) throw new AssertionError();
-        if (!resultSet.isBeforeFirst()) {
-            return null;
-        }
         return resultSet;
     }
 

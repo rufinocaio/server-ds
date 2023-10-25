@@ -15,7 +15,6 @@ public class JsonHandler {
             jsonBuilder.append(inputLine);
         }
 
-        // Imprimir o JSON no console
         String receivedJson = jsonBuilder.toString();
         System.out.println("JSON recebido do client: " + receivedJson);
         return receivedJson;

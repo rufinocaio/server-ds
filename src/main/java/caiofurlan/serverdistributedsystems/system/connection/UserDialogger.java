@@ -2,7 +2,6 @@ package caiofurlan.serverdistributedsystems.system.connection;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,21 +21,15 @@ public class UserDialogger implements Runnable {
     @Override
     public void run() {
         try {
-            // Crie leitores e escritores para comunicação com o cliente
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
             String message = null;
             while ((message = reader.readLine()) != null) {
                 System.out.println("JSON recebido do cliente: " + message);
 
-                // Parse JSON message
                 JsonNode jsonNode = objectMapper.readTree(message);
                 String action = jsonNode.get("action").asText();
-
-                // Send action and data to ActionHandler
                 String response = UserDialogActions.chooseAction(action, message);
-
-                // Send the response back to the client
                 System.out.println("Enviando para o cliente: " + response);
                 writer.println(response);
             }
