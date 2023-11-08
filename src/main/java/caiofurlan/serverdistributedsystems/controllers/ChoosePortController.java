@@ -2,7 +2,7 @@ package caiofurlan.serverdistributedsystems.controllers;
 
 import caiofurlan.serverdistributedsystems.App;
 import caiofurlan.serverdistributedsystems.models.Model;
-import caiofurlan.serverdistributedsystems.models.UserModel;
+import caiofurlan.serverdistributedsystems.models.User;
 import caiofurlan.serverdistributedsystems.system.utilities.JWTManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,14 +37,15 @@ public class ChoosePortController implements Initializable {
         try {
             if (Model.getInstance().getDatabaseDriver().getUserByID(1) == null)
             {
-                UserModel user = new UserModel("Admin", "admin@admin.com", JWTManager.hashPassword("0192023A7BBD73250516F069DF18B500"), "admin");
+                User user = new User("Admin", "admin@admin.com", JWTManager.hashPassword("0192023A7BBD73250516F069DF18B500"), "admin");
                 Model.getInstance().getDatabaseDriver().addUser(user);
             }
             if (Model.getInstance().getDatabaseDriver().getUserByID(2) == null)
             {
-                UserModel user = new UserModel("User", "user@user.com", JWTManager.hashPassword("6AD14BA9986E3615423DFCA256D04E3F"), "user");
+                User user = new User("User", "user@user.com", JWTManager.hashPassword("6AD14BA9986E3615423DFCA256D04E3F"), "user");
                 Model.getInstance().getDatabaseDriver().addUser(user);
             }
+            Model.getInstance().getDatabaseDriver().eraseSessions();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

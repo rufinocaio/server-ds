@@ -39,7 +39,6 @@ public class JWTManager {
     }
 
     public static String getUserIdFromToken(String token) {
-
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build()

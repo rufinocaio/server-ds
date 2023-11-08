@@ -11,16 +11,13 @@ public class Model {
     private final ViewFactory viewFactory;
     private final DatabaseDriver databaseDriver;
     private AccountType userAccountType = AccountType.USER;
-    private UserModel user;
-    private boolean userLoginSucessFlag;
-
+    private User user;
 
     private Model() {
         this.viewFactory = new ViewFactory();
         this.databaseDriver = new DatabaseDriver();
         this.userAccountType = AccountType.USER;
-        this.user = new UserModel("", "", "", "", 0);
-        this.userLoginSucessFlag = false;
+        this.user = new User();
     }
 
     public static synchronized Model getInstance() {
@@ -48,14 +45,12 @@ public class Model {
 
 
     /* User method section */
-    public boolean getUserLoginSucessFLag() {
-        return userLoginSucessFlag;
-    }
-    public void setUserLoginSucessFlag(boolean userLoginSucessFlag) {
-        this.userLoginSucessFlag = userLoginSucessFlag;
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public UserModel getUser() {
+    public User getUser() {
         return user;
     }
 
@@ -63,11 +58,8 @@ public class Model {
         ResultSet resultSet = databaseDriver.getUserLogin(email, password);
         try {
             if (resultSet.isBeforeFirst()) {
-                this.user.setName(resultSet.getString("name"));
-                this.user.setEmail(resultSet.getString("email"));
-                this.user.setUserID(resultSet.getLong("user_id"));
-                this.user.setAdmin(resultSet.getString("type"));
-                this.userLoginSucessFlag = true;
+                User tmpUser = databaseDriver.getUserFromResultSet(resultSet);
+                setUser(tmpUser);
             }
         } catch (Exception e) {
             e.printStackTrace();

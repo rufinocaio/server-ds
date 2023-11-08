@@ -19,4 +19,5 @@ module caiofurlan.serverdistributedsystems {
     exports caiofurlan.serverdistributedsystems.system.utilities;
     exports caiofurlan.serverdistributedsystems.views;
     exports caiofurlan.serverdistributedsystems.system.connection;
+    exports caiofurlan.serverdistributedsystems.system.connection.send;
 }

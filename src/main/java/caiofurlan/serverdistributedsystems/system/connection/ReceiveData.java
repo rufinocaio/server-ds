@@ -1,130 +1,98 @@
 package caiofurlan.serverdistributedsystems.system.connection;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
 public class ReceiveData {
-    private static final ObjectMapper jackson = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private String action;
-    private Map<String, Object> data;
+    private JsonNode data;
 
-    public ReceiveData(Map<String, Object> response) {
-        this.action = (String) response.get("action");
-        if (response.containsKey("data")) {
-            this.data = (Map<String, Object>) response.get("data");
+    public ReceiveData(JsonNode response) {
+        this.action = response.get("action").asText();
+        if (response.has("data")) {
+            this.data = response.get("data");
+        } else {
+            this.data = response;
         }
     }
 
-    public ReceiveData(String action, Map<String, Object> data) {
+    public ReceiveData(String action, JsonNode data) {
         this.action = action;
         this.data = data;
     }
 
     public ReceiveData() {}
 
-    public static Map<String, Object> stringToMap(String json) throws JsonProcessingException {
-        Map<String, Object> map = jackson.readValue(json, Map.class);
+    public static JsonNode stringToMap(String json) throws JsonProcessingException {
+        JsonNode map = objectMapper.readTree(json);
         return map;
     }
 
     public String getName() {
-        if (data.containsKey("name")) {
-            return (String) data.get("name");
+        if (data.has("name")) {
+            return data.get("name").asText();
         } else {
             System.out.println("Não há nome neste objeto.");
             return null;
-        }
-    }
-    public void setName(String name) {
-        if (data.containsKey("name")) {
-            data.replace("name  ", name);
-        } else {
-            System.out.println("Não há nome neste objeto.");
         }
     }
 
     public String getEmail() {
-        if (data.containsKey("email")) {
-            return (String) data.get("email");
+        if (data.has("email")) {
+            return data.get("email").asText();
         } else {
             System.out.println("Não há email neste objeto.");
             return null;
-        }
-    }
-
-    public void setEmail(String email) {
-        if (data.containsKey("email")) {
-            data.replace("email", email);
-        } else {
-            System.out.println("Não há email neste objeto.");
         }
     }
 
     public String getPassword() {
-        if (data.containsKey("password")) {
-            return (String) data.get("password");
+        if (data.has("password")) {
+            return data.get("password").asText();
         } else {
             System.out.println("Não há senha neste objeto.");
             return null;
         }
     }
-    public void setPassword(String password) {
-        if (data.containsKey("password")) {
-            data.replace("password", password);
-        } else {
-            System.out.println("Não há senha neste objeto.");
-        }
-    }
 
-    public long getUserID() {
-        if (data.containsKey("user_id")) {
-            return (long) data.get("user_id");
+    public int getID() {
+        if (data.has("id")) {
+            return data.get("id").asInt();
         } else {
             System.out.println("Não há ID de usuário neste objeto.");
             return 0;
         }
     }
 
-    public void setUserID(long userID) {
-        if (data.containsKey("user_id")) {
-            data.replace("user_id", userID);
+    public int getUserID() {
+        if (data.has("user_id")) {
+            return data.get("user_id").asInt();
         } else {
             System.out.println("Não há ID de usuário neste objeto.");
+            return 0;
         }
     }
 
     public String getType() {
-        if (data.containsKey("type")) {
-            return (String) data.get("type");
+        if (data.has("type")) {
+            return data.get("type").asText();
         } else {
             System.out.println("Não há tipo de conta neste objeto.");
             return null;
-        }
-    }
-    public void setType(String accountType) {
-        if (data.containsKey("type")) {
-            data.replace("type", accountType);
-        } else {
-            System.out.println("Não há tipo de conta neste objeto.");
         }
     }
 
     public String getToken() {
-        if (data.containsKey("token")) {
-            return (String) data.get("token");
+        if (data.has("token")) {
+            return data.get("token").asText();
         } else {
             System.out.println("Não há token neste objeto.");
             return null;
-        }
-    }
-    public void setToken(String token) {
-        if (data.containsKey("token")) {
-            data.replace("token", token);
-        } else {
-            System.out.println("Não há token neste objeto.");
         }
     }
 
@@ -136,11 +104,11 @@ public class ReceiveData {
         this.action = action;
     }
 
-    public Map<String, Object> getData() {
+    public JsonNode getData() {
         return data;
     }
 
-    public void setData(Map<String, Object> data) {
+    public void setData(JsonNode data) {
         this.data = data;
     }
 
