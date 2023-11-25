@@ -1,5 +1,6 @@
 package caiofurlan.serverdistributedsystems.system.connection;
 
+import caiofurlan.serverdistributedsystems.system.connection.receive.UserDialogActions;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,7 +27,6 @@ public class UserDialogger implements Runnable {
             String message = null;
             while ((message = reader.readLine()) != null) {
                 System.out.println("JSON recebido do cliente: " + message);
-
                 JsonNode jsonNode = objectMapper.readTree(message);
                 String action = jsonNode.get("action").asText();
                 String response = UserDialogActions.chooseAction(action, message);

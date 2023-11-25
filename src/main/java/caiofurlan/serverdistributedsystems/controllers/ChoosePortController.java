@@ -45,7 +45,6 @@ public class ChoosePortController implements Initializable {
                 User user = new User("User", "user@user.com", JWTManager.hashPassword("6AD14BA9986E3615423DFCA256D04E3F"), "user");
                 Model.getInstance().getDatabaseDriver().addUser(user);
             }
-            Model.getInstance().getDatabaseDriver().eraseSessions();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

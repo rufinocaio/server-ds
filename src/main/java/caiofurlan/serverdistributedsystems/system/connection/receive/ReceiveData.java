@@ -1,10 +1,9 @@
-package caiofurlan.serverdistributedsystems.system.connection;
+package caiofurlan.serverdistributedsystems.system.connection.receive;
 
+import caiofurlan.serverdistributedsystems.models.Point;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Map;
 
 public class ReceiveData {
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -29,8 +28,18 @@ public class ReceiveData {
     public ReceiveData() {}
 
     public static JsonNode stringToMap(String json) throws JsonProcessingException {
-        JsonNode map = objectMapper.readTree(json);
-        return map;
+        return objectMapper.readTree(json);
+    }
+
+    // Common
+
+    public String getToken() {
+        if (data.has("token")) {
+            return data.get("token").asText();
+        } else {
+            System.out.println("Não há token neste objeto.");
+            return null;
+        }
     }
 
     public String getName() {
@@ -41,6 +50,8 @@ public class ReceiveData {
             return null;
         }
     }
+
+    // User CRUD
 
     public String getEmail() {
         if (data.has("email")) {
@@ -57,15 +68,6 @@ public class ReceiveData {
         } else {
             System.out.println("Não há senha neste objeto.");
             return null;
-        }
-    }
-
-    public int getID() {
-        if (data.has("id")) {
-            return data.get("id").asInt();
-        } else {
-            System.out.println("Não há ID de usuário neste objeto.");
-            return 0;
         }
     }
 
@@ -87,12 +89,70 @@ public class ReceiveData {
         }
     }
 
-    public String getToken() {
-        if (data.has("token")) {
-            return data.get("token").asText();
+    // Point CRUD
+
+    public int getPointID() {
+        if (data.has("ponto_id")) {
+            return data.get("ponto_id").asInt();
         } else {
-            System.out.println("Não há token neste objeto.");
+            System.out.println("Não há ID de ponto neste objeto.");
+            return 0;
+        }
+    }
+
+    public String getObs() {
+        if (data.has("obs")) {
+            return data.get("obs").asText();
+        } else {
+            System.out.println("Não há observação neste objeto.");
             return null;
+        }
+    }
+
+    // Segment CRUD
+
+    public int getSegmentID() {
+        if (data.has("segmento_id")) {
+            return data.get("segmento_id").asInt();
+        } else {
+            System.out.println("Não há ID de segmento neste objeto.");
+            return 0;
+        }
+    }
+
+    public Point getStartPoint() {
+        if (data.has("ponto_origem")) {
+            return objectMapper.convertValue(data.get("ponto_origem"), Point.class);
+        } else {
+            System.out.println("Não há ponto inicial neste objeto.");
+            return null;
+        }
+    }
+
+    public Point getEndPoint() {
+        if (data.has("ponto_destino")) {
+            return objectMapper.convertValue(data.get("ponto_destino"), Point.class);
+        } else {
+            System.out.println("Não há ponto final neste objeto.");
+            return null;
+        }
+    }
+
+    public String getDirection() {
+        if (data.has("direcao")) {
+            return data.get("direcao").asText();
+        } else {
+            System.out.println("Não há direção neste objeto.");
+            return null;
+        }
+    }
+
+    public int getDistance() {
+        if (data.has("distancia")) {
+            return data.get("distancia").asInt();
+        } else {
+            System.out.println("Não há distância neste objeto.");
+            return 0;
         }
     }
 
@@ -111,5 +171,6 @@ public class ReceiveData {
     public void setData(JsonNode data) {
         this.data = data;
     }
+
 
 }

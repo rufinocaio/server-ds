@@ -1,4 +1,4 @@
-package caiofurlan.serverdistributedsystems.system.connection;
+package caiofurlan.serverdistributedsystems.system.utilities;
 
 import caiofurlan.serverdistributedsystems.models.Model;
 import caiofurlan.serverdistributedsystems.models.User;
@@ -11,7 +11,6 @@ public class UserValidation {
         if (!Objects.equals(user.getType(), type)) {
             throw new Exception("Não autorizado");
         }
-
         return true;
     }
 }

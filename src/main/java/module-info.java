@@ -15,9 +15,11 @@ module caiofurlan.serverdistributedsystems {
     exports caiofurlan.serverdistributedsystems;
     exports caiofurlan.serverdistributedsystems.controllers;
     exports caiofurlan.serverdistributedsystems.models;
-    exports caiofurlan.serverdistributedsystems.system;
     exports caiofurlan.serverdistributedsystems.system.utilities;
     exports caiofurlan.serverdistributedsystems.views;
     exports caiofurlan.serverdistributedsystems.system.connection;
     exports caiofurlan.serverdistributedsystems.system.connection.send;
+    exports caiofurlan.serverdistributedsystems.system.connection.send.usercrud;
+    exports caiofurlan.serverdistributedsystems.system.connection.send.adminusercrud;
+    exports caiofurlan.serverdistributedsystems.system.connection.receive;
 }
