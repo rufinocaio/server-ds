@@ -7,11 +7,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class SendRequestUserEdit extends Sender {
+
+public SendRequestUserEdit() {
+        super();
+        setAction("pedido-edicao-usuario");
+        setMessage("Sucesso");
+    }
+
     public JsonNode generateRequestUserEditData(User user) throws JsonProcessingException {
-        JsonNode jsonNode = objectMapper.createObjectNode();
-        ((ObjectNode) jsonNode).set("user", objectMapper.convertValue(user, JsonNode.class));
-        setData(jsonNode);
-        return generateFinalData("pedido-edicao-usuario", false, "Sucesso", getData());
+        ((ObjectNode) getData()).set("user", objectMapper.convertValue(user, JsonNode.class));
+        return generateFinalData();
     }
 
     public String sendText(User user) throws JsonProcessingException {

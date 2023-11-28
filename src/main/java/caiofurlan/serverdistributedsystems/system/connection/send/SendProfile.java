@@ -7,11 +7,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class SendProfile extends Sender {
 
-    public JsonNode generateProfileData(User userData) throws JsonProcessingException {
-        JsonNode jsonNode = objectMapper.createObjectNode();
-        ((ObjectNode) jsonNode).set("user", userData.generateJson());
-        setData(jsonNode);
-        return generateFinalData("pedido-proprio-usuario", false, "Sucesso", getData());
+    public SendProfile() {
+        super();
+        setAction("profile");
+        setMessage("Sucesso");
+    }
+
+    public JsonNode generateProfileData(User user) throws JsonProcessingException {
+        ((ObjectNode) getData()).set("user", objectMapper.convertValue(user, JsonNode.class));
+        return generateFinalData();
     }
 
     public String sendText(User userData) throws JsonProcessingException {

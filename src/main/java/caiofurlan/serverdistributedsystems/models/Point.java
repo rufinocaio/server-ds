@@ -35,13 +35,4 @@ public class Point {
         return id;
     }
 
-    public JsonNode generateJson() {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode json = mapper.createObjectNode();
-        ((ObjectNode) json).put("name", this.name);
-        ((ObjectNode) json).put("obs", this.obs);
-        ((ObjectNode) json).put("id", this.id);
-        return json;
-    }
-
 }

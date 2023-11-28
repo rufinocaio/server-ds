@@ -5,8 +5,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class SendError extends Sender {
 
+    public SendError() {
+        super();
+        setError(true);
+    }
+
     public JsonNode generateErrorData(String action, String message) throws JsonProcessingException {
-        return generateFinalData(action, true, message, null);
+        setAction(action);
+        setMessage(message);
+        return generateFinalData();
     }
 
     public String sendText(String action, String message) throws JsonProcessingException {

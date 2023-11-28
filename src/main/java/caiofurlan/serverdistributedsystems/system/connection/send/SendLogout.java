@@ -5,8 +5,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class SendLogout extends Sender {
 
+    public SendLogout() {
+        super();
+        setAction("logout");
+        setMessage("logout efetuado com sucesso");
+    }
+
     public JsonNode generateLogoutData() throws JsonProcessingException {
-        return generateFinalData("logout", false, "logout efetuado com sucesso", null);
+        return generateFinalData();
     }
 
     public String sendText() throws JsonProcessingException {

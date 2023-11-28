@@ -10,19 +10,24 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 
 public class SendPointList extends Sender {
+
+    public SendPointList() {
+        super();
+        setAction("listar-pontos");
+        setMessage("Sucesso");
+    }
+
     public JsonNode generateUserListData(List<Point> pointList) throws JsonProcessingException {
-        JsonNode jsonNode = objectMapper.createObjectNode();
         if(pointList == null || pointList.isEmpty()) {
-            ((ObjectNode) jsonNode).set("pontos", null);
+            ((ObjectNode) getData()).set("pontos", null);
         } else {
             ArrayNode pointsArray = objectMapper.createArrayNode();
             for (Point point : pointList) {
-                pointsArray.add(point.generateJson());
+                pointsArray.add(objectMapper.convertValue(point, JsonNode.class));
             }
-            ((ObjectNode) jsonNode).set("pontos", pointsArray);
+            ((ObjectNode) getData()).set("pontos", pointsArray);
         }
-        setData(jsonNode);
-        return generateFinalData("listar-pontos", false, "Sucesso", getData());
+        return generateFinalData();
     }
 
     public String sendText(List<Point> pointList) throws JsonProcessingException {

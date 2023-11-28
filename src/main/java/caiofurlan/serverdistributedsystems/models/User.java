@@ -1,5 +1,6 @@
 package caiofurlan.serverdistributedsystems.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class User {
     private String name;
     private String email;
+    @JsonIgnore
     private String password;
     private String type;
     private int id;
@@ -56,14 +58,4 @@ public class User {
         return id;
     }
 
-    public JsonNode generateJson() {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode json = mapper.createObjectNode();
-        ((ObjectNode) json).put("name", this.name);
-        ((ObjectNode) json).put("email", this.email);
-        ((ObjectNode) json).put("id", this.id);
-        ((ObjectNode) json).put("type", this.type);
-        return json;
     }
-
-}

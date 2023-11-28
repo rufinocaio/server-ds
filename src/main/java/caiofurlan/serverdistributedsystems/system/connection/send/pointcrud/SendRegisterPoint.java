@@ -5,8 +5,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SendRegisterPoint extends Sender {
+
+    public SendRegisterPoint() {
+        super();
+        setAction("cadastro-ponto");
+        setMessage("Ponto de referência cadastrado com sucesso!");
+    }
+
     public JsonNode generateRegisterPointData() throws JsonProcessingException {
-        return generateFinalData("cadastro-ponto", false, "Ponto de referência cadastrado com sucesso!", null);
+        return generateFinalData();
     }
 
     public String sendText() throws JsonProcessingException {

@@ -5,8 +5,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SendDeletePoint extends Sender {
+
+    public SendDeletePoint() {
+        super();
+        setAction("excluir-ponto");
+        setMessage("Ponto removido com sucesso!");
+    }
+
     public JsonNode generateDeletePointData() throws JsonProcessingException {
-        return generateFinalData("excluir-ponto", false, "Ponto removido com sucesso!", null);
+        return generateFinalData();
     }
 
     public String sendText() throws JsonProcessingException {

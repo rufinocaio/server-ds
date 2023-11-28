@@ -7,11 +7,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class SendRequestPointEdit extends Sender {
+
+    public SendRequestPointEdit() {
+        super();
+        setAction("pedido-edicao-ponto");
+        setMessage("Sucesso");
+    }
+
     public JsonNode generateRequestPointEditData(Point point) throws JsonProcessingException {
-        JsonNode jsonNode = objectMapper.createObjectNode();
-        ((ObjectNode) jsonNode).set("ponto", objectMapper.convertValue(point, JsonNode.class));
-        setData(jsonNode);
-        return generateFinalData("pedido-edicao-ponto", false, "Sucesso", getData());
+        ((ObjectNode) getData()).set("ponto", objectMapper.convertValue(point, JsonNode.class));
+        return generateFinalData();
     }
 
     public String sendText(Point point) throws JsonProcessingException {

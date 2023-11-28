@@ -10,19 +10,25 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 
 public class SendUserList extends Sender {
+
+    public SendUserList() {
+        super();
+        setAction("listar-usuarios");
+        setMessage("Sucesso");
+    }
+
     public JsonNode generateUserListData(List<User> userList) throws JsonProcessingException {
-        JsonNode jsonNode = objectMapper.createObjectNode();
         if(userList == null || userList.isEmpty()) {
-            ((ObjectNode) jsonNode).set("users", null);
+            ((ObjectNode) getData()).set("users", null);
         } else {
             ArrayNode usersArray = objectMapper.createArrayNode();
             for (User user : userList) {
-                usersArray.add(user.generateJson());
+                //usersArray.add(user.generateJson());
+                usersArray.add(objectMapper.convertValue(user, JsonNode.class));
             }
-            ((ObjectNode) jsonNode).set("users", usersArray);
+            ((ObjectNode) getData()).set("users", usersArray);
         }
-        setData(jsonNode);
-        return generateFinalData("listar-usuarios", false, "Sucesso", getData());
+        return generateFinalData();
     }
 
     public String sendText(List<User> ClientList) throws JsonProcessingException {

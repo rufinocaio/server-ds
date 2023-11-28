@@ -57,16 +57,4 @@ public class Segment {
         return id;
     }
 
-    public JsonNode generateJson() {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode json = mapper.createObjectNode();
-        ((ObjectNode) json).put("ponto_origem", this.ponto_origem.generateJson());
-        ((ObjectNode) json).put("ponto_destino", this.ponto_destino.generateJson());
-        ((ObjectNode) json).put("direcao", this.direcao);
-        ((ObjectNode) json).put("distancia", this.distancia);
-        ((ObjectNode) json).put("obs", this.obs);
-        ((ObjectNode) json).put("id", this.id);
-        return json;
-    }
-
 }

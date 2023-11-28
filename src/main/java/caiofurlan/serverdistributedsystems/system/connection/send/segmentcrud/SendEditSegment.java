@@ -5,8 +5,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SendEditSegment extends Sender {
+
+    public SendEditSegment() {
+        super();
+        setAction("edicao-segmento");
+        setMessage("Segmento atualizado com sucesso!");
+    }
+
     public JsonNode generateEditSegmentData() throws JsonProcessingException {
-        return generateFinalData("edicao-segmento", false, "Segmento atualizado com sucesso!", null);
+        return generateFinalData();
     }
 
     public String sendText() throws JsonProcessingException {

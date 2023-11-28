@@ -5,8 +5,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class SendDeleteSegment extends Sender {
+
+    public SendDeleteSegment() {
+        super();
+        setAction("excluir-segmento");
+        setMessage("Segmento removido com sucesso!");
+    }
+
     public JsonNode generateDeleteSegmentData() throws JsonProcessingException {
-        return generateFinalData("excluir-segmento", false, "Segmento removido com sucesso!", null);
+        return generateFinalData();
     }
 
     public String sendText() throws JsonProcessingException {

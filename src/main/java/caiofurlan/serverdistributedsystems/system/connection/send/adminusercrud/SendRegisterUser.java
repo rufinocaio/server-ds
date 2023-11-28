@@ -6,8 +6,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class SendRegisterUser extends Sender {
 
+    public SendRegisterUser() {
+        super();
+        setAction("cadastro-usuario");
+        setMessage("Usuário cadastrado com sucesso!");
+    }
+
     public JsonNode generateRegisterUserData() throws JsonProcessingException {
-        return generateFinalData("cadastro-usuario", false, "Usuário cadastrado com sucesso!", null);
+        return generateFinalData();
     }
 
     public String sendText() throws JsonProcessingException {

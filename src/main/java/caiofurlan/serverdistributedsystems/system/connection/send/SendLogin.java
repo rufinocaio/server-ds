@@ -6,11 +6,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class SendLogin extends Sender {
 
+    public SendLogin() {
+        super();
+        setAction("login");
+        setMessage("logado com sucesso");
+    }
+
     public JsonNode generateLoginData(String token) throws JsonProcessingException {
-        JsonNode jsonNode = objectMapper.createObjectNode();
-        ((ObjectNode) jsonNode).put("token", token);
-        setData(jsonNode);
-        return generateFinalData("login", false, "logado com sucesso", getData());
+        ((ObjectNode) getData()).put("token", token);
+        return generateFinalData();
     }
 
     public String sendText(String token) throws JsonProcessingException {

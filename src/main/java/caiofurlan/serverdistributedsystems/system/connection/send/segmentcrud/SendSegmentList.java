@@ -10,19 +10,24 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.List;
 
 public class SendSegmentList extends Sender {
+
+    public SendSegmentList() {
+        super();
+        setAction("listar-segmentos");
+        setMessage("Sucesso");
+    }
+
     public JsonNode generateUserListData(List<Segment> segmentList) throws JsonProcessingException {
-        JsonNode jsonNode = objectMapper.createObjectNode();
         if(segmentList == null || segmentList.isEmpty()) {
-            ((ObjectNode) jsonNode).set("segmentos", null);
+            ((ObjectNode) getData()).set("segmentos", null);
         } else {
-            ArrayNode usersArray = objectMapper.createArrayNode();
+            ArrayNode segmentsArray = objectMapper.createArrayNode();
             for (Segment segment : segmentList) {
-                usersArray.add(segment.generateJson());
+                segmentsArray.add(objectMapper.convertValue(segment, JsonNode.class));
             }
-            ((ObjectNode) jsonNode).set("segmentos", usersArray);
+            ((ObjectNode) getData()).set("segmentos", segmentsArray);
         }
-        setData(jsonNode);
-        return generateFinalData("listar-segmentos", false, "Sucesso", getData());
+        return generateFinalData();
     }
 
     public String sendText(List<Segment> ClientList) throws JsonProcessingException {

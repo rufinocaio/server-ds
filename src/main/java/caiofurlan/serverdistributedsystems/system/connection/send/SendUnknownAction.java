@@ -5,8 +5,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class SendUnknownAction extends Sender {
 
+    public SendUnknownAction() {
+        super();
+        setError(true);
+        setMessage("Ação desconhecida");
+    }
+
     public JsonNode generateUnknownActionData(String action) throws JsonProcessingException {
-        return generateFinalData(action, true, "Ação desconhecida", null);
+        setAction(action);
+        return generateFinalData();
     }
 
     public String sendText(String action) throws JsonProcessingException {

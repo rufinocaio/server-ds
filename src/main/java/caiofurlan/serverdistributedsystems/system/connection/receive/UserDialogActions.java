@@ -8,8 +8,8 @@ import caiofurlan.serverdistributedsystems.system.connection.send.*;
 import caiofurlan.serverdistributedsystems.system.connection.send.adminusercrud.*;
 import caiofurlan.serverdistributedsystems.system.connection.send.pointcrud.*;
 import caiofurlan.serverdistributedsystems.system.connection.send.segmentcrud.*;
-import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendAutoRegister;
-import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendEditUser;
+import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendAutoRegisterUser;
+import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendAutoEditUser;
 import caiofurlan.serverdistributedsystems.system.utilities.JWTManager;
 import caiofurlan.serverdistributedsystems.system.utilities.UserValidation;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -195,7 +195,7 @@ public class UserDialogActions {
                 if (user != null) {
                     user = new User(request.getName(), request.getEmail(), JWTManager.hashPassword(request.getPassword()), request.getType(), user.getID());
                     Model.getInstance().getDatabaseDriver().updateUser(user);
-                    SendEditUserADM sender = new SendEditUserADM();
+                    SendEditUser sender = new SendEditUser();
                     response = sender.sendText();
                 } else {
                     response = manageError(request.getAction(), "Usuário não encontrado!");
@@ -217,7 +217,7 @@ public class UserDialogActions {
                 User user = Model.getInstance().getDatabaseDriver().getUserByID(request.getUserID());
                 if (user != null) {
                     Model.getInstance().getDatabaseDriver().deleteUser(request.getUserID());
-                    SendDeleteUserADM sender = new SendDeleteUserADM();
+                    SendDeleteUser sender = new SendDeleteUser();
                     response = sender.sendText();
                 } else {
                     response = manageError(request.getAction(), "Usuário não encontrado!");
@@ -232,7 +232,7 @@ public class UserDialogActions {
 
     private static String manageUserAutoRegister(String data) throws JsonProcessingException {
         ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
-        SendAutoRegister sender = new SendAutoRegister();
+        SendAutoRegisterUser sender = new SendAutoRegisterUser();
         String response = null;
         User user = new User(request.getName(), request.getEmail(), JWTManager.hashPassword(request.getPassword()), "user");
         Model.getInstance().getDatabaseDriver().addUser(user);
@@ -260,7 +260,7 @@ public class UserDialogActions {
         if (user != null) {
             User newUser = new User(request.getName(), request.getEmail(), JWTManager.hashPassword(request.getPassword()), "user", user.getID());
             Model.getInstance().getDatabaseDriver().updateUser(newUser);
-            SendEditUser sender = new SendEditUser();
+            SendAutoEditUser sender = new SendAutoEditUser();
             response = sender.sendText();
         } else {
             response = manageError(request.getAction(), "Usuário não encontrado!");
@@ -274,7 +274,7 @@ public class UserDialogActions {
         User user = Model.getInstance().getDatabaseDriver().getUserByToken(request.getToken());
         if (user != null) {
             Model.getInstance().getDatabaseDriver().deleteUser(user.getID());
-            SendEditUser sender = new SendEditUser();
+            SendAutoEditUser sender = new SendAutoEditUser();
             response = sender.sendText();
         } else {
             response = manageError(request.getAction(), "Usuário não encontrado!");

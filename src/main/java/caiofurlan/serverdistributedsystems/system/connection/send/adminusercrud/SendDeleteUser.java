@@ -4,9 +4,16 @@ import caiofurlan.serverdistributedsystems.system.connection.send.Sender;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class SendDeleteUserADM extends Sender {
+public class SendDeleteUser extends Sender {
+
+    public SendDeleteUser() {
+        super();
+        setAction("excluir-usuario");
+        setMessage("Usuário removido com sucesso!");
+    }
+
     public JsonNode generateDeleteUserADMData() throws JsonProcessingException {
-        return generateFinalData("excluir-usuario", false, "Usuário removido com sucesso!", null);
+        return generateFinalData();
     }
 
     public String sendText() throws JsonProcessingException {
