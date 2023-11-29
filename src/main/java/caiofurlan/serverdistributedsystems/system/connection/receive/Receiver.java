@@ -1,17 +1,18 @@
 package caiofurlan.serverdistributedsystems.system.connection.receive;
 
 import caiofurlan.serverdistributedsystems.models.Point;
+import caiofurlan.serverdistributedsystems.models.Segment;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ReceiveData {
+public class Receiver {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private String action;
     private JsonNode data;
 
-    public ReceiveData(JsonNode response) {
+    public Receiver(JsonNode response) {
         this.action = response.get("action").asText();
         if (response.has("data")) {
             this.data = response.get("data");
@@ -20,12 +21,12 @@ public class ReceiveData {
         }
     }
 
-    public ReceiveData(String action, JsonNode data) {
+    public Receiver(String action, JsonNode data) {
         this.action = action;
         this.data = data;
     }
 
-    public ReceiveData() {}
+    public Receiver() {}
 
     public static JsonNode stringToMap(String json) throws JsonProcessingException {
         return objectMapper.readTree(json);
@@ -47,6 +48,15 @@ public class ReceiveData {
             return data.get("name").asText();
         } else {
             System.out.println("Não há nome neste objeto.");
+            return null;
+        }
+    }
+
+    public String getObs() {
+        if (data.has("obs")) {
+            return data.get("obs").asText();
+        } else {
+            System.out.println("Não há observação neste objeto.");
             return null;
         }
     }
@@ -100,15 +110,6 @@ public class ReceiveData {
         }
     }
 
-    public String getObs() {
-        if (data.has("obs")) {
-            return data.get("obs").asText();
-        } else {
-            System.out.println("Não há observação neste objeto.");
-            return null;
-        }
-    }
-
     // Segment CRUD
 
     public int getSegmentID() {
@@ -120,39 +121,12 @@ public class ReceiveData {
         }
     }
 
-    public Point getStartPoint() {
-        if (data.has("ponto_origem")) {
-            return objectMapper.convertValue(data.get("ponto_origem"), Point.class);
+    public Segment getSegment() {
+        if (data.has("segmento")) {
+            return objectMapper.convertValue(data.get("segmento"), Segment.class);
         } else {
-            System.out.println("Não há ponto inicial neste objeto.");
+            System.out.println("Não há segmento neste objeto.");
             return null;
-        }
-    }
-
-    public Point getEndPoint() {
-        if (data.has("ponto_destino")) {
-            return objectMapper.convertValue(data.get("ponto_destino"), Point.class);
-        } else {
-            System.out.println("Não há ponto final neste objeto.");
-            return null;
-        }
-    }
-
-    public String getDirection() {
-        if (data.has("direcao")) {
-            return data.get("direcao").asText();
-        } else {
-            System.out.println("Não há direção neste objeto.");
-            return null;
-        }
-    }
-
-    public int getDistance() {
-        if (data.has("distancia")) {
-            return data.get("distancia").asInt();
-        } else {
-            System.out.println("Não há distância neste objeto.");
-            return 0;
         }
     }
 

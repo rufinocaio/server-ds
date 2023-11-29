@@ -2,6 +2,7 @@ package caiofurlan.serverdistributedsystems.system.connection.send;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,7 @@ public abstract class Sender {
     private String action;
     private boolean error;
     private String message;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private JsonNode data;
 
     public Sender() {
@@ -54,16 +56,9 @@ public abstract class Sender {
     }
 
     public JsonNode generateFinalData() throws JsonProcessingException {
-        /*ObjectNode jsonNode = objectMapper.createObjectNode();
-        jsonNode.put("action", getAction());
-        jsonNode.put("error", getError());
-        if (getMessage() != null && !getMessage().isEmpty()) {
-            jsonNode.put("message", getMessage());
+        if (getData().isEmpty()) {
+            setData(null);
         }
-        if (getData() != null) {
-            jsonNode.put("data", getData());
-        }
-        return jsonNode;*/
         return objectMapper.convertValue(this, JsonNode.class);
     }
 

@@ -148,6 +148,7 @@ public class DatabaseDriver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        deleteSegmentFromPointID(pointID);
     }
 
     public List<Point> getPointList() throws SQLException {
@@ -165,15 +166,14 @@ public class DatabaseDriver {
         while (resultSet.next()) {
             int id = resultSet.getInt("pointID");
             String name = resultSet.getString("name");
-            String obs = resultSet.getString("obs");
-
+            String obs = resultSet.getString("obs").isEmpty() || resultSet.getString("obs").equals("null") ? null : resultSet.getString("obs");
             Point point = new Point(name, obs, id);
             pointList.add(point);
         }
         return pointList;
     }
 
-    public Point getPointByID(long pointID) throws SQLException {
+    public Point getPointByID(int pointID) throws SQLException {
         Statement statement;
         ResultSet resultSet = null;
         statement = this.connection.createStatement();
@@ -190,7 +190,8 @@ public class DatabaseDriver {
         }
         Point point = null;
         try {
-            point = new Point(resultSet.getString("name"), resultSet.getString("obs"), resultSet.getInt("pointID"));
+            String obs = resultSet.getString("obs").isEmpty() || resultSet.getString("obs").equals("null") ? null : resultSet.getString("obs");
+            point = new Point(resultSet.getString("name"), obs, resultSet.getInt("pointID"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -203,7 +204,7 @@ public class DatabaseDriver {
         Statement statement;
         try {
             statement = this.connection.createStatement();
-            statement.executeUpdate("INSERT INTO user (startPointID, endPointID, direction, distance, obs) VALUES ('" + segment.getPontoOrigem().getID() + "', '" + segment.getPontoDestino().getID() + "', '" + segment.getDirecao() + "', '" + segment.getDistancia() + "', '" + segment.getObs() + "')");
+            statement.executeUpdate("INSERT INTO segment (startPointID, endPointID, direction, distance, obs) VALUES ('" + segment.getPontoOrigem().getID() + "', '" + segment.getPontoDestino().getID() + "', '" + segment.getDirecao() + "', '" + segment.getDistancia() + "', '" + segment.getObs() + "')");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -213,7 +214,7 @@ public class DatabaseDriver {
         Statement statement;
         try {
             statement = this.connection.createStatement();
-            statement.executeUpdate("UPDATE segment SET startPointID = '" + segment.getPontoOrigem().getID() + "', endPointID = '" + segment.getPontoDestino().getID() + "', direction = '" + segment.getDirecao() + "', distance = '" + segment.getDistancia() + "', obs = '" + segment.getObs() + "' WHERE segmentID = '" + segment.getID() + "'");
+            statement.executeUpdate("UPDATE segment SET startPointID = '" + segment.getPontoOrigem().getID() + "', endPointID = '" + segment.getPontoDestino().getID() + "', direction = '" + segment.getDirecao() + "', distance = '" + segment.getDistancia() + "', obs = '" + segment.getObs() + "' WHERE segmentID = '" + segment.getId() + "'");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -247,7 +248,7 @@ public class DatabaseDriver {
             int endPointID = resultSet.getInt("endPointID");
             String direction = resultSet.getString("direction");
             int distance = resultSet.getInt("distance");
-            String obs = resultSet.getString("obs");
+            String obs = resultSet.getString("obs").isEmpty() || resultSet.getString("obs").equals("null") ? null : resultSet.getString("obs");
 
             Segment segment = new Segment(getPointByID(startPointID), getPointByID(endPointID), direction, distance, obs, id);
             segmentList.add(segment);
@@ -266,13 +267,24 @@ public class DatabaseDriver {
         return getSegmentFromResultSet(resultSet);
     }
 
+    public void deleteSegmentFromPointID(int pointId) {
+        Statement statement;
+        try {
+            statement = this.connection.createStatement();
+            statement.executeUpdate("DELETE FROM segment WHERE startPointID = '" + pointId + "' OR endPointID = '" + pointId + "'");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Segment getSegmentFromResultSet(ResultSet resultSet) {
         if (resultSet == null) {
             return null;
         }
         Segment segment = null;
         try {
-            segment = new Segment(getPointByID(resultSet.getInt("startPointID")), getPointByID(resultSet.getInt("endPointID")), resultSet.getString("direction"), resultSet.getInt("distance"), resultSet.getString("obs"), resultSet.getInt("segmentID"));
+            String obs = resultSet.getString("obs").isEmpty() || resultSet.getString("obs").equals("null") ? null : resultSet.getString("obs");
+            segment = new Segment(getPointByID(resultSet.getInt("startPointID")), getPointByID(resultSet.getInt("endPointID")), resultSet.getString("direction"), resultSet.getInt("distance"), obs, resultSet.getInt("segmentID"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

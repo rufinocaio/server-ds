@@ -12,6 +12,7 @@ module caiofurlan.serverdistributedsystems {
 
     opens caiofurlan.serverdistributedsystems to javafx.fxml;
     opens caiofurlan.serverdistributedsystems.controllers to javafx.fxml;
+    opens caiofurlan.serverdistributedsystems.models to com.fasterxml.jackson.databind;
     exports caiofurlan.serverdistributedsystems;
     exports caiofurlan.serverdistributedsystems.controllers;
     exports caiofurlan.serverdistributedsystems.models;

@@ -102,7 +102,7 @@ public class UserDialogActions {
     }
 
     private static String manageLogin(String data) throws JsonProcessingException, SQLException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserLogin(request.getEmail(), request.getPassword());
         if (user != null) {
@@ -122,7 +122,7 @@ public class UserDialogActions {
     }
 
     private static String manageLogout(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String token = request.getToken();
         if (Model.getInstance().getSessionManager().validateSession(token)) {
             Model.getInstance().getSessionManager().removeSession(token);
@@ -133,7 +133,7 @@ public class UserDialogActions {
     }
 
     private static String manageRegisterUser(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
@@ -151,7 +151,7 @@ public class UserDialogActions {
     }
 
     private static String manageRequestUserEdit(String data) throws SQLException, JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserByID(request.getUserID());
         if (user == null) {
@@ -164,13 +164,13 @@ public class UserDialogActions {
     }
 
     private static String manageUserList(String data) throws SQLException, JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
             if (UserValidation.validate("admin", id)) {
                 List<User> userList = Model.getInstance().getDatabaseDriver().getUserList();
-                if (userList.isEmpty()) {
+                if (userList == null || userList.isEmpty()) {
                     SendUserList sender = new SendUserList();
                     response = sender.sendText(null);
                 } else {
@@ -179,14 +179,13 @@ public class UserDialogActions {
                 }
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
 
     private static String manageEditUserADM(String data) throws SQLException, JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
@@ -209,7 +208,7 @@ public class UserDialogActions {
     }
 
     private static String manageDeleteUserADM(String data) throws JsonProcessingException, SQLException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
@@ -231,7 +230,7 @@ public class UserDialogActions {
     }
 
     private static String manageUserAutoRegister(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         SendAutoRegisterUser sender = new SendAutoRegisterUser();
         String response = null;
         User user = new User(request.getName(), request.getEmail(), JWTManager.hashPassword(request.getPassword()), "user");
@@ -241,7 +240,7 @@ public class UserDialogActions {
     }
 
     private static String manageUserInfo(String data) throws JsonProcessingException, SQLException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserByToken(request.getToken());
         if (user != null) {
@@ -254,7 +253,7 @@ public class UserDialogActions {
     }
 
     private static String manageEditUser(String data) throws JsonProcessingException, SQLException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserByToken(request.getToken());
         if (user != null) {
@@ -269,7 +268,7 @@ public class UserDialogActions {
     }
 
     private static String manageDeleteUser(String data) throws JsonProcessingException, SQLException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserByToken(request.getToken());
         if (user != null) {
@@ -283,7 +282,7 @@ public class UserDialogActions {
     }
 
     private static String manageRegisterPoint(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
@@ -294,14 +293,13 @@ public class UserDialogActions {
                 response = sender.sendText();
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
 
     private static String manageRequestPointEdit(String data) throws JsonProcessingException, SQLException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         Point point = Model.getInstance().getDatabaseDriver().getPointByID(request.getPointID());
         if (point == null) {
@@ -314,13 +312,13 @@ public class UserDialogActions {
     }
 
     private static String managePointList(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
             if (UserValidation.validate("admin", id)) {
                 List<Point> pointList = Model.getInstance().getDatabaseDriver().getPointList();
-                if (pointList.isEmpty()) {
+                if (pointList == null || pointList.isEmpty()) {
                     SendPointList sender = new SendPointList();
                     response = sender.sendText(null);
                 } else {
@@ -329,14 +327,13 @@ public class UserDialogActions {
                 }
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
 
     private static String manageEditPoint(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
@@ -352,14 +349,13 @@ public class UserDialogActions {
                 }
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
 
     private static String manageDeletePoint(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
@@ -374,32 +370,30 @@ public class UserDialogActions {
                 }
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
 
     private static String manageRegisterSegment(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
             if (UserValidation.validate("admin", id)) {
-                Segment segment = new Segment(request.getStartPoint(), request.getEndPoint(), request.getDirection(), request.getDistance(), request.getObs());
+                Segment segment = new Segment(request.getSegment().getPontoOrigem(), request.getSegment().getPontoDestino(), request.getSegment().getDirecao(), request.getSegment().getDistancia(), request.getSegment().getObs());
                 Model.getInstance().getDatabaseDriver().addSegment(segment);
                 SendRegisterSegment sender = new SendRegisterSegment();
                 response = sender.sendText();
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
 
     private static String manageRequestSegmentEdit(String data) throws JsonProcessingException, SQLException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         Segment segment = Model.getInstance().getDatabaseDriver().getSegmentByID(request.getSegmentID());
         if (segment == null) {
@@ -412,13 +406,13 @@ public class UserDialogActions {
     }
 
     private static String manageSegmentList(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
             if (UserValidation.validate("admin", id)) {
                 List<Segment> segmentList = Model.getInstance().getDatabaseDriver().getSegmentList();
-                if (segmentList.isEmpty()) {
+                if (segmentList == null || segmentList.isEmpty()) {
                     SendSegmentList sender = new SendSegmentList();
                     response = sender.sendText(null);
                 } else {
@@ -427,21 +421,20 @@ public class UserDialogActions {
                 }
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
 
     private static String manageEditSegment(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
             if (UserValidation.validate("admin", adminID)) {
                 Segment segment = Model.getInstance().getDatabaseDriver().getSegmentByID(request.getSegmentID());
                 if (segment != null) {
-                    segment = new Segment(request.getStartPoint(), request.getEndPoint(), request.getDirection(), request.getDistance(), request.getObs(), segment.getID());
+                    segment = new Segment(request.getSegment().getPontoOrigem(), request.getSegment().getPontoDestino(), request.getSegment().getDirecao(), request.getSegment().getDistancia(), request.getObs(), segment.getId());
                     Model.getInstance().getDatabaseDriver().updateSegment(segment);
                     SendEditSegment sender = new SendEditSegment();
                     response = sender.sendText();
@@ -450,14 +443,13 @@ public class UserDialogActions {
                 }
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
 
     private static String manageDeleteSegment(String data) throws JsonProcessingException {
-        ReceiveData request = new ReceiveData(ReceiveData.stringToMap(data));
+        Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
@@ -472,8 +464,7 @@ public class UserDialogActions {
                 }
             }
         } catch (Exception e) {
-            SendError errorSender = new SendError();
-            response = errorSender.sendText(request.getAction(), e.getMessage());
+            e.printStackTrace();
         }
         return response;
     }
