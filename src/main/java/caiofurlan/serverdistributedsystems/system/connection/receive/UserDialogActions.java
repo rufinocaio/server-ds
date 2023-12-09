@@ -7,10 +7,12 @@ import caiofurlan.serverdistributedsystems.models.User;
 import caiofurlan.serverdistributedsystems.system.connection.send.*;
 import caiofurlan.serverdistributedsystems.system.connection.send.adminusercrud.*;
 import caiofurlan.serverdistributedsystems.system.connection.send.pointcrud.*;
+import caiofurlan.serverdistributedsystems.system.connection.send.routes.SendRequestRoute;
 import caiofurlan.serverdistributedsystems.system.connection.send.segmentcrud.*;
 import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendAutoRegisterUser;
 import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendAutoEditUser;
 import caiofurlan.serverdistributedsystems.system.utilities.JWTManager;
+import caiofurlan.serverdistributedsystems.system.utilities.RouteCalculator;
 import caiofurlan.serverdistributedsystems.system.utilities.UserValidation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -87,6 +89,9 @@ public class UserDialogActions {
                     break;
                 case "excluir-segmento":
                     response = manageDeleteSegment(data);
+                    break;
+                case "pedido-rotas":
+                    response = manageRequestRoutes(data);
                     break;
                 default:
                     response = unknownAction(action);
@@ -229,7 +234,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageUserAutoRegister(String data) throws JsonProcessingException {
+    private static String manageUserAutoRegister(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         SendAutoRegisterUser sender = new SendAutoRegisterUser();
         String response = null;
@@ -381,7 +386,7 @@ public class UserDialogActions {
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
             if (UserValidation.validate("admin", id)) {
-                Segment segment = new Segment(request.getSegment().getPontoOrigem(), request.getSegment().getPontoDestino(), request.getSegment().getDirecao(), request.getSegment().getDistancia(), request.getSegment().getObs());
+                Segment segment = new Segment(request.getSegment().getPontoOrigem(), request.getSegment().getPontoDestino(), request.getSegment().getDirecao(), request.getSegment().getDistancia(), request.getSegment().getBloqueado(), request.getSegment().getObs());
                 Model.getInstance().getDatabaseDriver().addSegment(segment);
                 SendRegisterSegment sender = new SendRegisterSegment();
                 response = sender.sendText();
@@ -434,7 +439,7 @@ public class UserDialogActions {
             if (UserValidation.validate("admin", adminID)) {
                 Segment segment = Model.getInstance().getDatabaseDriver().getSegmentByID(request.getSegmentID());
                 if (segment != null) {
-                    segment = new Segment(request.getSegment().getPontoOrigem(), request.getSegment().getPontoDestino(), request.getSegment().getDirecao(), request.getSegment().getDistancia(), request.getObs(), segment.getId());
+                    segment = new Segment(request.getSegment().getPontoOrigem(), request.getSegment().getPontoDestino(), request.getSegment().getDirecao(), request.getSegment().getDistancia(), request.getSegment().getBloqueado(), request.getObs(), segment.getId());
                     Model.getInstance().getDatabaseDriver().updateSegment(segment);
                     SendEditSegment sender = new SendEditSegment();
                     response = sender.sendText();
@@ -462,6 +467,24 @@ public class UserDialogActions {
                 } else {
                     response = manageError(request.getAction(), "Segmento não encontrado!");
                 }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    private static String manageRequestRoutes(String data) throws JsonProcessingException {
+        Receiver request = new Receiver(Receiver.stringToMap(data));
+        String response = null;
+        try {
+            RouteCalculator routeCalculator = new RouteCalculator();
+            List<Segment> segmentList = routeCalculator.calculateShortestPath(request.getStartPoint(), request.getEndPoint());
+            if (!segmentList.isEmpty()) {
+                SendRequestRoute sender = new SendRequestRoute();
+                response = sender.sendText(segmentList);
+            } else {
+                response = manageError(request.getAction(), "Rota não encontrada!");
             }
         } catch (Exception e) {
             e.printStackTrace();

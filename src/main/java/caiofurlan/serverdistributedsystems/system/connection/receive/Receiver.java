@@ -130,6 +130,26 @@ public class Receiver {
         }
     }
 
+    // Route
+
+    public Point getStartPoint() {
+        if (data.has("ponto_origem")) {
+            return objectMapper.convertValue(data.get("ponto_origem"), Point.class);
+        } else {
+            System.out.println("Não há ponto inicial neste objeto.");
+            return null;
+        }
+    }
+
+    public Point getEndPoint() {
+        if (data.has("ponto_destino")) {
+            return objectMapper.convertValue(data.get("ponto_destino"), Point.class);
+        } else {
+            System.out.println("Não há ponto final neste objeto.");
+            return null;
+        }
+    }
+
     public String getAction() {
         return action;
     }

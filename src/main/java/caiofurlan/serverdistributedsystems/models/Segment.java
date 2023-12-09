@@ -7,27 +7,35 @@ public class Segment {
     private Point pontoOrigem;
     @JsonProperty("ponto_destino")
     private Point pontoDestino;
-    String direcao;
-    int distancia;
-    String obs;
-    int id;
+    @JsonProperty("direcao")
+    private String direcao;
+    @JsonProperty("distancia")
+    private int distancia;
+    @JsonProperty("bloqueado")
+    private boolean bloqueado;
+    @JsonProperty("obs")
+    private String obs;
+    @JsonProperty("id")
+    private int id;
 
     public Segment() {
     }
 
-    public Segment(Point pontoOrigem, Point pontoDestino, String direcao, int distancia, String obs) {
-        this.pontoOrigem = pontoOrigem;
-        this.pontoDestino = pontoDestino;
+    public Segment(Point ponto_origem, Point ponto_destino, String direcao, int distancia, boolean bloqueado, String obs) {
+        this.pontoOrigem = ponto_origem;
+        this.pontoDestino = ponto_destino;
         this.direcao = direcao;
         this.distancia = distancia;
-        this.obs = obs == null || obs.isEmpty() ? null : obs;
+        this.obs = obs;
+        this.bloqueado = bloqueado;
     }
 
-    public Segment(Point pontoOrigem, Point pontoDestino, String direcao, int distancia, String obs, int id) {
+    public Segment(Point pontoOrigem, Point pontoDestino, String direcao, int distancia, boolean bloqueado, String obs, int id) {
         this.pontoOrigem = pontoOrigem;
         this.pontoDestino = pontoDestino;
         this.direcao = direcao;
         this.distancia = distancia;
+        this.bloqueado = bloqueado;
         this.obs = obs == null || obs.isEmpty() ? null : obs;
         this.id = id;
     }
@@ -36,16 +44,16 @@ public class Segment {
         return pontoOrigem;
     }
 
-    public void setPontoOrigem(Point pontoOrigem) {
-        this.pontoOrigem = pontoOrigem;
+    public void setPontoOrigem(Point ponto_origem) {
+        this.pontoOrigem = ponto_origem;
     }
 
     public Point getPontoDestino() {
         return pontoDestino;
     }
 
-    public void setPontoDestino(Point pontoDestino) {
-        this.pontoDestino = pontoDestino;
+    public void setPontoDestino(Point ponto_destino) {
+        this.pontoDestino = ponto_destino;
     }
 
     public String getDirecao() {
@@ -70,6 +78,14 @@ public class Segment {
 
     public void setObs(String obs) {
         this.obs = obs;
+    }
+
+    public boolean getBloqueado() {
+        return bloqueado;
+    }
+
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
     }
 
     public int getId() {
