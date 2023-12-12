@@ -15,15 +15,12 @@ public class Server implements Runnable{
     @Override
     public void run() {
         ServerSocket serverSocket = null;
-
         try {
             serverSocket = new ServerSocket(PORT);
             System.out.println("Servidor iniciou na porta " + PORT);
-
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Novo cliente: " + clientSocket);
-
                 Thread clientThread = new Thread(new UserDialogger(clientSocket));
                 clientThread.start();
             }

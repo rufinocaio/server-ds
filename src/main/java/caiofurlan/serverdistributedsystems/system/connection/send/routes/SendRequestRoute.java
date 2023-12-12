@@ -2,6 +2,7 @@ package caiofurlan.serverdistributedsystems.system.connection.send.routes;
 
 import caiofurlan.serverdistributedsystems.models.Segment;
 import caiofurlan.serverdistributedsystems.system.connection.send.Sender;
+import caiofurlan.serverdistributedsystems.system.utilities.JacksonViews;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -18,10 +19,9 @@ public class SendRequestRoute extends Sender {
 
     public JsonNode generateRequestRouteData(List<Segment> segments) throws JsonProcessingException {
         ArrayNode arrayNode = objectMapper.createArrayNode();
-        int i = 0;
         for (Segment segment : segments) {
-            JsonNode jsonNode = objectMapper.convertValue(segment, JsonNode.class);
-            ((ObjectNode) jsonNode).put("id", i++);
+            String jsonString = objectMapper.writerWithView(JacksonViews.Public.class).writeValueAsString(segment);
+            JsonNode jsonNode = objectMapper.readTree(jsonString);
             arrayNode.add(jsonNode);
         }
         ((ObjectNode) this.getData()).set("segmentos", arrayNode);

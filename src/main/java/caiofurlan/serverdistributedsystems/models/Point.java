@@ -1,8 +1,6 @@
 package caiofurlan.serverdistributedsystems.models;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.Objects;
 
 public class Point {
     private String name;
@@ -31,8 +29,20 @@ public class Point {
         return obs;
     }
 
-    public int getID(){
+    public int getId(){
         return id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point point = (Point) o;
+        return id == point.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

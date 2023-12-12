@@ -1,20 +1,29 @@
 package caiofurlan.serverdistributedsystems.models;
 
+import caiofurlan.serverdistributedsystems.system.utilities.JacksonViews;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 
 public class Segment {
+    @JsonView(JacksonViews.Public.class)
     @JsonProperty("ponto_origem")
     private Point pontoOrigem;
+    @JsonView(JacksonViews.Public.class)
     @JsonProperty("ponto_destino")
     private Point pontoDestino;
+    @JsonView(JacksonViews.Public.class)
     @JsonProperty("direcao")
     private String direcao;
+    @JsonView(JacksonViews.Public.class)
     @JsonProperty("distancia")
     private int distancia;
+    @JsonView(JacksonViews.Private.class)
     @JsonProperty("bloqueado")
     private boolean bloqueado;
+    @JsonView(JacksonViews.Public.class)
     @JsonProperty("obs")
     private String obs;
+    @JsonView(JacksonViews.Private.class)
     @JsonProperty("id")
     private int id;
 

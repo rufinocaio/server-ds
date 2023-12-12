@@ -25,7 +25,7 @@ public class Model {
         return viewFactory;
     }
 
-    public DatabaseDriver getDatabaseDriver() {
+    public synchronized DatabaseDriver getDatabaseDriver() {
         return databaseDriver;
     }
 

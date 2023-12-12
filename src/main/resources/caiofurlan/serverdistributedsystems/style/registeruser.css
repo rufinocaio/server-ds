@@ -1,5 +1,6 @@
 .create_client_container {
     -fx-background-color: #EEEEEE;
+    -fx-font-family: "Calibri Light";
 }
 
 .create_client_container Text {
@@ -8,13 +9,21 @@
 }
 
 .create_client_container VBox {
-    -fx-border-width: 0 0 0 1;
+    -fx-border-width: 3 3 3 3;
     -fx-border-color: #000000;
     -fx-padding: 10;
     -fx-spacing: 15;
 }
 
 .create_client_container TextField {
+    -fx-pref-width: 250;
+    -fx-pref-height: 35;
+    -fx-background-color: #FFFFFF;
+    -fx-font-size: 1.3em;
+    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3, 0, 0, 3);
+}
+
+.create_client_container PasswordField {
     -fx-pref-width: 250;
     -fx-pref-height: 35;
     -fx-background-color: #FFFFFF;

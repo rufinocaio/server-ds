@@ -1,8 +1,13 @@
 package caiofurlan.serverdistributedsystems.controllers;
 
+import caiofurlan.serverdistributedsystems.models.Model;
+import caiofurlan.serverdistributedsystems.models.Session;
+import caiofurlan.serverdistributedsystems.views.SessionCellFactory;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -10,15 +15,16 @@ import java.util.ResourceBundle;
 public class HomeController implements Initializable {
 
     @FXML
-    private static Label home_text;
+    private ListView<Session> session_list_view;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        home_text = new Label();
-        setHome_text("Servidor aberto!");
-    }
+        session_list_view.setItems(Model.getInstance().getSessionManager().getLoginSessions());
+        session_list_view.setCellFactory(studentListView -> new SessionCellFactory());
 
-    public static void setHome_text(String text) {
-        home_text.setText(text);
-    }
+        // Listen for changes in the list of login sessions
+        Model.getInstance().getSessionManager().getLoginSessions().addListener((javafx.collections.ListChangeListener.Change<? extends Session> c) -> {
+            session_list_view.refresh();
+        });    }
+
 }

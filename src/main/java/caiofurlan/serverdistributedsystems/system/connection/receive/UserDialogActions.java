@@ -22,7 +22,13 @@ import java.util.List;
 
 public class UserDialogActions {
 
-    public static String chooseAction(String action, String data) throws JsonProcessingException {
+    private final String ip;
+
+    public UserDialogActions(String ip) {
+        this.ip = ip;
+    }
+
+    public String chooseAction(String action, String data) throws JsonProcessingException {
         String response = null;
 
         try {
@@ -106,7 +112,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageLogin(String data) throws JsonProcessingException, SQLException {
+    private String manageLogin(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserLogin(request.getEmail(), request.getPassword());
@@ -116,7 +122,7 @@ public class UserDialogActions {
                 SendLogin sender = new SendLogin();
                 String token = JWTManager.generateToken(String.valueOf(user.getID()), user.getType().equals("admin"));
                 response = sender.sendText(token);
-                Model.getInstance().getSessionManager().addSession(token, user);
+                Model.getInstance().getSessionManager().updateSession(ip, token, user);
             } else {
                 response = manageError(request.getAction(), "Credenciais incorretas!");
             }
@@ -126,18 +132,18 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageLogout(String data) throws JsonProcessingException {
+    private String manageLogout(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String token = request.getToken();
         if (Model.getInstance().getSessionManager().validateSession(token)) {
-            Model.getInstance().getSessionManager().removeSession(token);
+            Model.getInstance().getSessionManager().removeLoginSession(ip);
             SendLogout sender = new SendLogout();
             return sender.sendText();
         }
         return manageError(request.getAction(), "Este token não está ativo no momento.");
     }
 
-    private static String manageRegisterUser(String data) throws JsonProcessingException {
+    private String manageRegisterUser(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -155,7 +161,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageRequestUserEdit(String data) throws SQLException, JsonProcessingException {
+    private String manageRequestUserEdit(String data) throws SQLException, JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserByID(request.getUserID());
@@ -168,7 +174,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageUserList(String data) throws SQLException, JsonProcessingException {
+    private String manageUserList(String data) throws SQLException, JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -189,7 +195,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageEditUserADM(String data) throws SQLException, JsonProcessingException {
+    private String manageEditUserADM(String data) throws SQLException, JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -212,7 +218,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageDeleteUserADM(String data) throws JsonProcessingException, SQLException {
+    private String manageDeleteUserADM(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -234,7 +240,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageUserAutoRegister(String data) throws JsonProcessingException, SQLException {
+    private String manageUserAutoRegister(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         SendAutoRegisterUser sender = new SendAutoRegisterUser();
         String response = null;
@@ -244,7 +250,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageUserInfo(String data) throws JsonProcessingException, SQLException {
+    private String manageUserInfo(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserByToken(request.getToken());
@@ -257,7 +263,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageEditUser(String data) throws JsonProcessingException, SQLException {
+    private String manageEditUser(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserByToken(request.getToken());
@@ -272,7 +278,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageDeleteUser(String data) throws JsonProcessingException, SQLException {
+    private String manageDeleteUser(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         User user = Model.getInstance().getDatabaseDriver().getUserByToken(request.getToken());
@@ -286,7 +292,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageRegisterPoint(String data) throws JsonProcessingException {
+    private String manageRegisterPoint(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -303,7 +309,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageRequestPointEdit(String data) throws JsonProcessingException, SQLException {
+    private String manageRequestPointEdit(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         Point point = Model.getInstance().getDatabaseDriver().getPointByID(request.getPointID());
@@ -316,20 +322,17 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String managePointList(String data) throws JsonProcessingException {
+    private String managePointList(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
-        int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
         try {
-            if (UserValidation.validate("admin", id)) {
-                List<Point> pointList = Model.getInstance().getDatabaseDriver().getPointList();
-                if (pointList == null || pointList.isEmpty()) {
-                    SendPointList sender = new SendPointList();
-                    response = sender.sendText(null);
-                } else {
-                    SendPointList sender = new SendPointList();
-                    response = sender.sendText(pointList);
-                }
+            List<Point> pointList = Model.getInstance().getDatabaseDriver().getPointList();
+            if (pointList == null || pointList.isEmpty()) {
+                SendPointList sender = new SendPointList();
+                response = sender.sendText(null);
+            } else {
+                SendPointList sender = new SendPointList();
+                response = sender.sendText(pointList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -337,7 +340,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageEditPoint(String data) throws JsonProcessingException {
+    private String manageEditPoint(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -345,7 +348,7 @@ public class UserDialogActions {
             if (UserValidation.validate("admin", adminID)) {
                 Point point = Model.getInstance().getDatabaseDriver().getPointByID(request.getPointID());
                 if (point != null) {
-                    point = new Point(request.getName(), request.getObs(), point.getID());
+                    point = new Point(request.getName(), request.getObs(), point.getId());
                     Model.getInstance().getDatabaseDriver().updatePoint(point);
                     SendEditPoint sender = new SendEditPoint();
                     response = sender.sendText();
@@ -359,7 +362,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageDeletePoint(String data) throws JsonProcessingException {
+    private String manageDeletePoint(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -380,7 +383,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageRegisterSegment(String data) throws JsonProcessingException {
+    private String manageRegisterSegment(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -397,7 +400,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageRequestSegmentEdit(String data) throws JsonProcessingException, SQLException {
+    private String manageRequestSegmentEdit(String data) throws JsonProcessingException, SQLException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         Segment segment = Model.getInstance().getDatabaseDriver().getSegmentByID(request.getSegmentID());
@@ -410,7 +413,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageSegmentList(String data) throws JsonProcessingException {
+    private String manageSegmentList(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int id = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -431,7 +434,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageEditSegment(String data) throws JsonProcessingException {
+    private String manageEditSegment(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -453,7 +456,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageDeleteSegment(String data) throws JsonProcessingException {
+    private String manageDeleteSegment(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         int adminID = Integer.parseInt((JWTManager.getUserIdFromToken(request.getToken())));
@@ -474,7 +477,7 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String manageRequestRoutes(String data) throws JsonProcessingException {
+    private String manageRequestRoutes(String data) throws JsonProcessingException {
         Receiver request = new Receiver(Receiver.stringToMap(data));
         String response = null;
         try {
@@ -492,11 +495,11 @@ public class UserDialogActions {
         return response;
     }
 
-    private static String unknownAction(String action) throws JsonProcessingException {
+    private String unknownAction(String action) throws JsonProcessingException {
         SendUnknownAction sender = new SendUnknownAction();
         return sender.sendText(action);
     }
-    private static String manageError(String action, String message) throws JsonProcessingException {
+    private String manageError(String action, String message) throws JsonProcessingException {
         SendError sender = new SendError();
         return sender.sendText(action, message);
     }

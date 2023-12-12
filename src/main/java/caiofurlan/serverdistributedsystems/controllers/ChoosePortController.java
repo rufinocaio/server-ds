@@ -32,7 +32,7 @@ public class ChoosePortController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        port_field.setText("12345");
+        port_field.setText("23000");
         error_text.setText("");
         try {
             if (Model.getInstance().getDatabaseDriver().getUserByID(1) == null)
