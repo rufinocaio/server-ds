@@ -9,7 +9,7 @@ public class SendProfile extends Sender {
 
     public SendProfile() {
         super();
-        setAction("profile");
+        setAction("pedido-proprio-usuario");
         setMessage("Sucesso");
     }
 
