@@ -15,7 +15,7 @@ public class SendRequestSegmentEdit extends Sender {
     }
 
     public JsonNode generateRequestSegmentEditData(Segment segment) throws JsonProcessingException {
-        ((ObjectNode) this.getData()).set("segment", objectMapper.convertValue(segment, JsonNode.class));
+        ((ObjectNode) this.getData()).set("segmento", objectMapper.convertValue(segment, JsonNode.class));
         return generateFinalData();
     }
 

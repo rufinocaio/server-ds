@@ -1,7 +1,6 @@
 package caiofurlan.serverdistributedsystems.controllers;
 
 import caiofurlan.serverdistributedsystems.models.Session;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;

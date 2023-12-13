@@ -26,6 +26,7 @@ public class SendSegmentList extends Sender {
                 segmentsArray.add(objectMapper.convertValue(segment, JsonNode.class));
             }
             ((ObjectNode) getData()).set("segmentos", segmentsArray);
+
         }
         return generateFinalData();
     }

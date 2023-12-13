@@ -3,10 +3,8 @@ package caiofurlan.serverdistributedsystems.controllers;
 import caiofurlan.serverdistributedsystems.models.Model;
 import caiofurlan.serverdistributedsystems.models.Session;
 import caiofurlan.serverdistributedsystems.views.SessionCellFactory;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 import java.net.URL;

@@ -25,7 +25,11 @@ public class SendRequestRoute extends Sender {
             arrayNode.add(jsonNode);
         }
         ((ObjectNode) this.getData()).set("segmentos", arrayNode);
-        return generateFinalData();
+        JsonNode jsonNode = objectMapper.createObjectNode();
+        ((ObjectNode) jsonNode).put("error", getError());
+        ((ObjectNode) jsonNode).put("message", getMessage());
+        ((ObjectNode) jsonNode).set("segmentos", arrayNode);
+        return jsonNode;
     }
 
     public String sendText(List<Segment> segments) throws JsonProcessingException {

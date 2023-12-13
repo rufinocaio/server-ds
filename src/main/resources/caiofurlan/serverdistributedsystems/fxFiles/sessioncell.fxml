@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <AnchorPane prefHeight="130.0" prefWidth="770.0" style="-fx-border-color: linear-gradient(to right, #132A13, #253F25); -fx-border-width: 3; -fx-border-radius: 5;" styleClass="create_client_container" stylesheets="@../style/registeruser.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" >
     <Label fx:id="ip_label" layoutX="570.0" layoutY="59.0" prefHeight="17.0" prefWidth="107.0" text="IP: 192.168.0.1" />
     <Label fx:id="username_label" layoutX="50.0" layoutY="59.0" prefHeight="17.0" prefWidth="199.0" text="Usuário: Caio Furlan">

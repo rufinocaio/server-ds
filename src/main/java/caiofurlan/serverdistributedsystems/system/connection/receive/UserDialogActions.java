@@ -9,8 +9,8 @@ import caiofurlan.serverdistributedsystems.system.connection.send.adminusercrud.
 import caiofurlan.serverdistributedsystems.system.connection.send.pointcrud.*;
 import caiofurlan.serverdistributedsystems.system.connection.send.routes.SendRequestRoute;
 import caiofurlan.serverdistributedsystems.system.connection.send.segmentcrud.*;
-import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendAutoRegisterUser;
 import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendAutoEditUser;
+import caiofurlan.serverdistributedsystems.system.connection.send.usercrud.SendAutoRegisterUser;
 import caiofurlan.serverdistributedsystems.system.utilities.JWTManager;
 import caiofurlan.serverdistributedsystems.system.utilities.RouteCalculator;
 import caiofurlan.serverdistributedsystems.system.utilities.UserValidation;

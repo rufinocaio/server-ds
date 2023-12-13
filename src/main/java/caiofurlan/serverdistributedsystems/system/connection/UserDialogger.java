@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class UserDialogger implements Runnable {
@@ -22,11 +23,13 @@ public class UserDialogger implements Runnable {
 
     @Override
     public void run() {
+        InetSocketAddress socketAddress = (InetSocketAddress) clientSocket.getRemoteSocketAddress();
+        String clientIP = socketAddress.getAddress().getHostAddress();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
-            UserDialogActions userDialogActions = new UserDialogActions(clientSocket.getInetAddress().toString());
-            Model.getInstance().getSessionManager().addSession(clientSocket.getInetAddress().toString());
+            UserDialogActions userDialogActions = new UserDialogActions(clientIP);
+            Model.getInstance().getSessionManager().addSession(clientIP);
             String message = null;
             while ((message = reader.readLine()) != null) {
                 JsonNode jsonNode = objectMapper.readTree(message);
@@ -41,7 +44,7 @@ public class UserDialogger implements Runnable {
             }
         } catch (IOException e) {
             try {
-                Model.getInstance().getSessionManager().removeSessions(clientSocket.getInetAddress().toString());
+                Model.getInstance().getSessionManager().removeSessions(clientIP);
                 System.out.println("Socket closed!");
                 clientSocket.close();
             } catch (IOException ex) {
